@@ -1,0 +1,10 @@
+/dist/
+/bin/
+/.local-data/
+/.test-data/
+/test-results/
+/.tools/
+*.log
+*.tmp
+coverage.out
+.DS_Store

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>超能力德扑 · Human Poker Lab</title><link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css"><script defer src="/app.js"></script></head>
+<body>
+<header class="topbar"><a class="brand" href="/"><span class="brand-mark">♠</span><span>超能力德扑<small>HUMAN POKER LAB</small></span></a><div class="rules"><span class="live-dot"></span>本地离线<span class="rule-divider">/</span>6 人桌<span class="rule-divider">/</span>100 BB · 无抽水</div><button id="quit" class="text-button">退出应用</button></header>
+<main>
+<section class="intro"><div><p class="eyebrow">YOU MAKE THE CALL.</p><h1>信息是超能力，<span>决策交给你。</span></h1><p class="muted">五个原版机器人。一位真人。选择你的优势，看看能走多远。</p></div><div class="save-badge"><span>●</span><div>自动保存<small>刷新或重启，继续未完成的牌局</small></div></div></section>
+<div id="notice" class="notice" role="status" hidden></div>
+<section class="workspace">
+<div class="play-column">
+<div class="ability-picker" role="group" aria-label="选择下手能力">
+<button class="ability selected" id="mode-a" data-mode="A" aria-pressed="true"><span class="ability-letter">A</span><span><strong>底牌透视</strong><small>看见所有人的底牌，包括已弃牌者</small></span><span class="ability-tick">✓</span></button>
+<button class="ability" id="mode-b" data-mode="B" aria-pressed="false"><span class="ability-letter">B</span><span><strong>预知公牌</strong><small>提前看见完整的五张公牌</small></span><span class="ability-tick">✓</span></button>
+</div>
+<div class="table-panel">
+<div class="table-meta"><span id="hand-label">准备入座</span><span id="street-label">NO LIMIT HOLD'EM</span><span id="ability-label">A · 底牌透视</span></div>
+<div id="future-panel" class="future-panel" hidden><div class="future-title"><span id="future-label">B 的未来视野</span><strong id="future-hand"></strong></div><div id="future-cards" class="future-cards"></div><div class="future-streets"><span>FLOP</span><span>TURN</span><span>RIVER</span></div></div>
+<div class="arena" id="arena"><div class="felt"><div class="felt-ring"></div><div class="board-zone"><span class="pot-label">底池</span><strong id="pot">0 <small>BB</small></strong><div id="board" class="cards board-cards"></div><p id="table-message">准备好后，开始第一手</p></div><div class="felt-watermark">HUMAN POKER LAB</div></div><div id="seats"></div></div>
+<div class="hero-caption"><span id="hero-hand">你的每一步，都由你决定。</span><span id="ability-note">A 模式只显示底牌，公牌随牌局揭晓。</span></div>
+<div class="action-dock" id="action-dock">
+<div id="ready-actions" class="ready-actions"><div><strong id="result-title">轮到你掌控牌局</strong><p id="result-subtitle">盲注 0.5 / 1 BB，每手恢复 100 BB。</p></div><button class="primary" id="next-hand">开始第一手 <span>→</span></button></div>
+<div id="human-actions" hidden><div class="action-top"><strong>轮到你行动</strong><span id="call-info"></span></div><div class="raise-control"><label for="raise-amount">加注至 <span class="muted">本街总额</span></label><div class="amount-input"><input id="raise-amount" type="number" min="0" step="0.1" inputmode="decimal" aria-label="加注至多少BB"><span>BB</span></div><input id="raise-slider" type="range" min="0" max="100" step="0.1" aria-label="加注金额滑杆"></div><div class="sizing-buttons"><button data-pot="0.33">⅓ 池</button><button data-pot="0.5">½ 池</button><button data-pot="1">1 倍池</button><button data-pot="2">2 倍池</button></div><div class="action-buttons"><button id="fold" class="fold">弃牌 <kbd>F</kbd></button><button id="call" class="call">过牌 <kbd>C</kbd></button><button id="raise" class="primary">加注</button><button id="allin" class="allin">全下</button></div><p class="action-footnote">没有倒计时。按你的判断行动；本手结束后可切换能力。</p></div>
+</div>
+</div>
+<details class="action-log" open><summary>本手行动记录 <span id="log-count">0</span></summary><div id="log-list" class="log-list"><p class="empty-copy">机器人行动会显示在这里。</p></div></details>
+</div>
+<aside class="stats-panel">
+<div class="section-heading"><div><p class="eyebrow">YOUR TRACK RECORD</p><h2>我的成绩</h2></div><select id="scope" aria-label="统计范围"><option value="all">全部历史</option><option value="session">本次会话</option><option value="20">最近 20 手 / 模式</option><option value="100">最近 100 手 / 模式</option><option value="500">最近 500 手 / 模式</option></select></div>
+<div class="stats-mode-label"><span id="stats-badge" class="mini-badge">A</span><strong id="stats-mode-title">底牌透视</strong><span id="stats-hands">0 手已完成</span></div>
+<div class="main-stat"><span>累计净盈利</span><strong id="net-bb">0.0 <small>BB</small></strong></div>
+<div class="metric-grid"><div><span>每百手盈利</span><strong id="bb100">—</strong><small>BB / 100</small></div><div><span>盈利手率</span><strong id="profit-rate">—</strong><small id="wins">0 手盈利</small></div></div>
+<div class="chart-heading"><span>累计走势</span><span id="chart-range">所选统计范围</span></div><div class="chart-wrap"><svg id="chart" viewBox="0 0 300 145" role="img" aria-label="累计净盈利走势"></svg><span id="chart-empty">完成第一手后，记录从这里开始。</span></div>
+<div class="small-metrics"><div><span>VPIP / PFR</span><strong id="vpip-pfr">— / —</strong></div><div><span>最大单手盈利</span><strong id="best">—</strong></div><div><span>最大单手亏损</span><strong id="worst">—</strong></div></div>
+<div class="mode-comparison"><h3>A / B 独立记录</h3><div id="compare-a"></div><div id="compare-b"></div><p>只统计已结束的牌局。BB/100 = 净盈利 ÷ 手数 × 100。</p></div>
+<div class="data-actions"><button id="export-csv">↓ 导出 CSV</button><button id="export-json">↓ 手牌 JSON</button></div><button id="new-session" class="new-session">开始新会话 <span>保留全部历史</span></button>
+</aside>
+</section>
+<section class="history-panel"><div class="history-heading"><div><p class="eyebrow">REVIEW YOUR DECISIONS</p><h2>最近手牌 <span id="history-mode">A</span></h2></div><p id="history-count">暂无记录</p></div><div class="history-table-wrap"><table><thead><tr><th>手牌</th><th>完成时间</th><th>你的底牌</th><th>实际公牌</th><th>结果</th><th></th></tr></thead><tbody id="history-body"></tbody></table></div><div id="history-empty" class="empty-history"><span>♧</span><strong>每一手，都值得回看。</strong><p>完成牌局后，可以复盘所有底牌与下注过程。</p></div></section>
+<nav class="history-pagination" aria-label="历史手牌分页"><button id="history-newer">← 较新手牌</button><span id="history-page">第 1 页</span><button id="history-older">较早手牌 →</button></nav>
+<footer><span>开源 · 本地存储 · 原版 Complex 机器人</span><span>仅虚拟筹码实验。无账号，无充值，无联网对战。</span><a href="https://github.com/lox/pokerforbots" target="_blank" rel="noreferrer">Powered by PokerForBots ↗</a></footer>
+</main>
+<dialog id="review"><div class="review-head"><h2 id="review-title">手牌复盘</h2><button id="review-close" aria-label="关闭复盘">✕</button></div><div id="review-content"></div></dialog>
+</body></html>
