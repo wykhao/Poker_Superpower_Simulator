@@ -15,8 +15,8 @@
 
 ## 验证范围
 
-Windows 是本次实际运行验证的平台。发布脚本为 Windows、macOS、Linux 各生成 x64 和 ARM64 构建；交叉编译成功不等于已在其他操作系统或 ARM64 设备上运行。发布包未签名或公证。
+Windows 是本次实际浏览器操作验证的平台。GitHub CI 另在 Windows、macOS、Linux 执行了后端测试与构建，均通过。发布脚本为三个系统各生成 x64 和 ARM64 构建；交叉编译成功不等于已在每种设备上完成桌面界面验证。发布包未签名或公证。
 
-本机没有 C 编译器，因此未执行 race detector。仓库 CI 已配置 Linux race 检查，以及 Windows、macOS、Linux 的普通测试与构建；尚未在 GitHub 上执行这些工作流。
+本机没有 C 编译器，因此未在本机执行 race detector；GitHub CI 的 Linux race 检查已通过。参见 [v0.1.0 源码的首次完整 CI 记录](https://github.com/wykhao/Poker_Superpower_Simulator/actions/runs/38095686161)。
 
 测试验证程序规则、信息权限和记录一致性，不证明机器人等同真人，也不证明任何能力的理论最优收益。最终 A/B 成绩取决于真人的决策与样本量。
